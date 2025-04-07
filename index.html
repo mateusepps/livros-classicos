@@ -9,14 +9,37 @@
       font-family: Arial, sans-serif;
       background-color: #f9f9f9;
       padding: 20px;
+      max-width: 800px;
+      margin: auto;
     }
     .filtros {
       margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
     .filtros label {
-      display: block;
-      margin-top: 10px;
       font-weight: bold;
+    }
+    .filtros select,
+    .filtros input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+    .filtros button {
+      padding: 12px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .filtros button:hover {
+      background-color: #45a049;
     }
     .livro {
       background-color: #fff;
@@ -37,6 +60,15 @@
     .resumo {
       font-size: 0.95em;
     }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .filtros button {
+        font-size: 18px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -51,7 +83,7 @@
     </select>
 
     <label for="idade">Idade:</label>
-    <input type="number" id="idade" min="1" max="120">
+    <input type="number" id="idade" min="1" max="120" inputmode="numeric">
 
     <label for="origem">Origem:</label>
     <select id="origem">
@@ -470,28 +502,29 @@
         resumo: "Um romance trágico de amores impossíveis e conflitos familiares que marcou a literatura lusófona."
       }
     ];
-    
+
+
     function filtrarLivros() {
       const genero = document.getElementById('genero').value;
       const idadeStr = document.getElementById('idade').value;
       const idade = idadeStr ? parseInt(idadeStr) : null;
       const origem = document.getElementById('origem').value;
-    
+
       const container = document.getElementById('lista-livros');
       container.innerHTML = '';
-    
+
       const livrosFiltrados = livros.filter(livro => {
         const generoOk = !genero || livro.genero === genero;
         const idadeOk = !idade || (idade >= livro.idade[0] && idade <= livro.idade[1]);
         const origemOk = !origem || livro.origem === origem;
         return generoOk && idadeOk && origemOk;
       });
-    
+
       if (livrosFiltrados.length === 0) {
         container.innerHTML = '<p>Nenhum livro encontrado para o perfil selecionado.</p>';
         return;
       }
-    
+
       livrosFiltrados.forEach(livro => {
         const div = document.createElement('div');
         div.className = 'livro';
